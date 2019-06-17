@@ -8,7 +8,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final WordPair wordPair = new WordPair.random();
 
     return MaterialApp(
       title: 'Flutter Demo',
@@ -25,7 +24,15 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.orange,
       ),
 //      home: MyHomePage(title: 'Flutter Demo Home Page'),
-      home: MyButtonHomePage(),
+//      home: MyButtonHomePage(),
+    home: Scaffold(
+      appBar: AppBar(
+        title: Text("test random name"),
+      ),
+      body: Center(
+        child: RandomWords(),
+      ),
+    ),
     );
   }
 }
@@ -150,6 +157,23 @@ class MyButtonHomePageState extends State<MyButtonHomePage> {
         ),
       ),
     );
+  }
+
+}
+
+class RandomWords extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+    return RandomWordsState4();
+  }
+
+}
+
+class RandomWordsState4 extends State<RandomWords> {
+  @override
+  Widget build(BuildContext context) {
+    final WordPair wordPair = WordPair.random();
+    return Text(wordPair.asPascalCase);
   }
 
 }
