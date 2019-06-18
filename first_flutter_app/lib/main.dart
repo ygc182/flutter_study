@@ -24,7 +24,26 @@ class MyApp extends StatelessWidget {
       ),
 //      home: MyHomePage(title: 'Flutter Demo Home Page'),
 //      home: MyButtonHomePage(),
-      home: RandomWords(),
+//      home: RandomWords(),
+    home: Scaffold(
+      appBar: AppBar(title: Text("Text widget"),),
+      body: Center(
+        child: Text(
+          "Hello fultter,He fultter,Helterr,Helterr,Helter",
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.center,
+          maxLines: 1,
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.red,
+            backgroundColor: Colors.orange,
+            decoration: TextDecoration.underline,  // 下划线
+            decorationStyle:TextDecorationStyle.solid,
+          ),
+
+        ),
+      ),
+    ),
     );
   }
 }
@@ -200,6 +219,7 @@ class RandomWordsState4 extends State<RandomWords> {
       title: new Text(
         pair.asPascalCase,
         style: _biggerFont,
+        textAlign: TextAlign.center,
       ),
       trailing: new Icon(alreadySaved ? Icons.favorite : Icons.favorite_border,
         color: alreadySaved ? Colors.red : null,
@@ -254,7 +274,7 @@ class RandomWordsState4 extends State<RandomWords> {
               .toList();
           return new Scaffold(
             appBar: new AppBar(
-              title: new Text('Saved Suggestions'),
+              title: new Text('Saved Suggestions', textAlign: TextAlign.center,),
             ),
             body: new ListView(children: divided),
           );
