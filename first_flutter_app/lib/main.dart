@@ -25,14 +25,7 @@ class MyApp extends StatelessWidget {
       ),
 //      home: MyHomePage(title: 'Flutter Demo Home Page'),
 //      home: MyButtonHomePage(),
-    home: Scaffold(
-      appBar: AppBar(
-        title: Text("test random name"),
-      ),
-      body: Center(
-        child: RandomWords(),
-      ),
-    ),
+    home: RandomWords(),
     );
   }
 }
@@ -170,10 +163,46 @@ class RandomWords extends StatefulWidget{
 }
 
 class RandomWordsState4 extends State<RandomWords> {
+  final _suggestions = <WordPair>[];
+  final _biggerFont = const TextStyle(fontSize: 18.0);
+
+  Widget _buildSuggestions(){
+    return ListView.builder(
+        itemBuilder: (context, i){
+          print("itemBuilder: " + i.toString());
+          if(i.isOdd) return Divider(color: Colors.red,); // i 是否是奇数 m
+          final index = i ~/2;
+          if(index >= _suggestions.length) {
+            _suggestions.addAll(generateWordPairs().take(10));
+          }
+          return _buildRow(_suggestions[index]);
+        }
+    );
+  }
+
+  Widget _buildRow(WordPair pair) {
+
+    print("_buildRow: " + pair.asPascalCase);
+    return new ListTile(
+      title: new Text(
+        pair.asPascalCase,
+        style: _biggerFont,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final WordPair wordPair = WordPair.random();
-    return Text(wordPair.asPascalCase);
+//    final WordPair wordPair = WordPair.random();
+//    return Text(wordPair.asPascalCase);
+  return new Scaffold(
+      appBar: AppBar(
+        title: Text("Startup namer"),
+      ),
+      body: _buildSuggestions(),
+
+  );
   }
+
 
 }
