@@ -8,7 +8,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -25,7 +24,7 @@ class MyApp extends StatelessWidget {
       ),
 //      home: MyHomePage(title: 'Flutter Demo Home Page'),
 //      home: MyButtonHomePage(),
-    home: RandomWords(),
+      home: RandomWords(),
     );
   }
 }
@@ -101,7 +100,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Text(
               '$_counter',
-              style: Theme.of(context).textTheme.display1,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .display1,
             ),
           ],
         ),
@@ -117,16 +119,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class MyButtonHomePage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState()  =>  MyButtonHomePageState();
+  State<StatefulWidget> createState() => MyButtonHomePageState();
 }
 
 class MyButtonHomePageState extends State<MyButtonHomePage> {
   int count = 1;
-  void increment(){
+
+  void increment() {
     setState(() {
       count++;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -138,8 +142,11 @@ class MyButtonHomePageState extends State<MyButtonHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              "$count" ,
-              style: Theme.of(context).textTheme.display1,
+              "$count",
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .display1,
             ),
             RawMaterialButton(
               onPressed: increment,
@@ -154,7 +161,7 @@ class MyButtonHomePageState extends State<MyButtonHomePage> {
 
 }
 
-class RandomWords extends StatefulWidget{
+class RandomWords extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return RandomWordsState4();
@@ -165,14 +172,16 @@ class RandomWords extends StatefulWidget{
 class RandomWordsState4 extends State<RandomWords> {
   final _suggestions = <WordPair>[];
   final _biggerFont = const TextStyle(fontSize: 18.0);
+  final _saved = Set<WordPair>();
 
-  Widget _buildSuggestions(){
+
+  Widget _buildSuggestions() {
     return ListView.builder(
-        itemBuilder: (context, i){
+        itemBuilder: (context, i) {
           print("itemBuilder: " + i.toString());
-          if(i.isOdd) return Divider(color: Colors.red,); // i 是否是奇数 m
-          final index = i ~/2;
-          if(index >= _suggestions.length) {
+          if (i.isOdd) return Divider(color: Colors.red,); // i 是否是奇数 m
+          final index = i ~/ 2;
+          if (index >= _suggestions.length) {
             _suggestions.addAll(generateWordPairs().take(10));
           }
           return _buildRow(_suggestions[index]);
@@ -180,14 +189,30 @@ class RandomWordsState4 extends State<RandomWords> {
     );
   }
 
+
+
   Widget _buildRow(WordPair pair) {
+    final alreadySaved = _saved.contains(pair);
 
     print("_buildRow: " + pair.asPascalCase);
     return new ListTile(
+
       title: new Text(
         pair.asPascalCase,
         style: _biggerFont,
       ),
+      trailing: new Icon(alreadySaved ? Icons.favorite : Icons.favorite_border,
+        color: alreadySaved ? Colors.red : null,
+      ),
+      onTap: (){
+        setState(() {
+          if(alreadySaved){
+            _saved.remove(pair);
+          } else {
+            _saved.add(pair);
+          }
+        });
+      },
     );
   }
 
@@ -195,13 +220,13 @@ class RandomWordsState4 extends State<RandomWords> {
   Widget build(BuildContext context) {
 //    final WordPair wordPair = WordPair.random();
 //    return Text(wordPair.asPascalCase);
-  return new Scaffold(
+    return new Scaffold(
       appBar: AppBar(
         title: Text("Startup namer"),
       ),
       body: _buildSuggestions(),
 
-  );
+    );
   }
 
 
