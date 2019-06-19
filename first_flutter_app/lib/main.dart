@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
               ],
             ),
           ),
-          Star(),
+          ParentWidget(),
         ],
       ),
     );
@@ -134,23 +134,47 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Star extends StatefulWidget{
+class ParentWidget extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
-    return _StarState();
+    return _ParentWidgetState();
   }
 }
 
-class _StarState extends State<Star>{
-
+class _ParentWidgetState extends State<ParentWidget>{
+  // 在Flutter中，由父weidget管理状态时，事件流是“向上”传递的，而状态流是“向下”传递的
+  // （译者语：这类似于React/Vue中父子组件通信的方式：子widget到父widget是通过事件通信，而父到子是通过状态），
+  // 重定向这一流程的共同父元素是State。
   bool _isStar = true;
   int _starCount = 41;
-  void _changeStarState(){
-    print("_changeStarState");
+  void _handleStarStateChage(bool star){
     setState(() {
-      _isStar = !_isStar;
+      _isStar = star;
       _isStar? ++_starCount : --_starCount;
     });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+      child: Star(
+        star: _isStar,
+        startCount: _starCount,
+        onChanged: _handleStarStateChage,
+      ),
+    );
+  }
+
+}
+
+class Star extends StatelessWidget{
+  Star({Key key, this.star: false, this.startCount, this.onChanged}) : super(key : key);
+
+  final bool star;
+  final int startCount;
+  final ValueChanged<bool> onChanged;
+
+  void _handTap(){
+    onChanged(!star);
   }
 
   @override
@@ -162,22 +186,21 @@ class _StarState extends State<Star>{
           padding: EdgeInsets.all(0),
           child: IconButton(
             icon: Icon(
-              _isStar?Icons.star:Icons.star_border,
+              star?Icons.star:Icons.star_border,
             ),
             color: Colors.red[500],
-            onPressed: _changeStarState,
+            onPressed: _handTap,
           ),
         ),
         new SizedBox(
           width: 18.0,
           child: new Container(
-            child: new Text('$_starCount'),
+            child: new Text('$startCount'),
           ),
         ),
       ],
     );
   }
-
 }
 
 class MyHomePage extends StatefulWidget {
