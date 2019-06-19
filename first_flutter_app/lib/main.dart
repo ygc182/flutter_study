@@ -57,11 +57,7 @@ class MyApp extends StatelessWidget {
               ],
             ),
           ),
-          Icon(
-            Icons.star,
-            color: Colors.red[500],
-          ),
-          Text("41"),
+          Star(),
         ],
       ),
     );
@@ -136,6 +132,52 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+}
+
+class Star extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+    return _StarState();
+  }
+}
+
+class _StarState extends State<Star>{
+
+  bool _isStar = true;
+  int _starCount = 41;
+  void _changeStarState(){
+    print("_changeStarState");
+    setState(() {
+      _isStar = !_isStar;
+      _isStar? ++_starCount : --_starCount;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.all(0),
+          child: IconButton(
+            icon: Icon(
+              _isStar?Icons.star:Icons.star_border,
+            ),
+            color: Colors.red[500],
+            onPressed: _changeStarState,
+          ),
+        ),
+        new SizedBox(
+          width: 18.0,
+          child: new Container(
+            child: new Text('$_starCount'),
+          ),
+        ),
+      ],
+    );
+  }
+
 }
 
 class MyHomePage extends StatefulWidget {
